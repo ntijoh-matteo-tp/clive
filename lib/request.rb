@@ -4,25 +4,30 @@
 class Request
   attr_reader :method, :resource, :version, :headers, :params
 
-  def initialize(requeststring)
+  def map_params(params)
+    params.map do |item|
+      item = item.split('=')
+      @params[item[0]] = item[1]
+    end
+  end
 
-    @method, @resource, @version = requeststring.split(' ')
+  def parse_request_lines(request_string)
+    @method, @resource, @version = request_string.split(' ')
+  end
+
+  def parse_headers(request_string_split)
     @headers = {}
-    request_string_split = requeststring.split("\n").drop(1)
+
     request_string_split.map do |item|
       break if item == ''
 
-      item = item.split(' ')
-      @headers[item[0].chomp(':')] = item[1]
+      item = item.split(': ')
+      @headers[item[0]] = item[1]
     end
+  end
 
+  def parse_params(request_string_split)
     @params = {}
-    def map_params(params)
-      params.map do |item|
-        item = item.split('=')
-        @params[item[0]] = item[1]
-      end
-    end
 
     # Params in resource
     if @resource.include?('?')
@@ -36,11 +41,20 @@ class Request
       params = request_string_split[-1].split('&')
       map_params(params)
     end
+  end
+
+  private :map_params, :parse_headers, :parse_params
+
+  def initialize(request_string)
+    parse_request_lines(request_string)
+    request_string_split = request_string.split("\n").drop(1)
+    parse_headers(request_string_split)
+    parse_params(request_string_split)
 
     puts "Method: #{@method}", "Resource: #{@resource}", "Version: #{@version}", "Headers: #{@headers}",
          "Params: #{@params}"
   end
 end
 
-request_string = File.read('../test/example_requests/post-login.request.txt')
-request = Request.new(request_string)
+request_string = File.read('../test/example_requests/get-fruits-with-filter.request.txt')
+Request.new(request_string)
