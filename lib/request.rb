@@ -2,6 +2,16 @@
 
 # abc
 class Request
+  def initialize(request_string)
+    parse_request_lines(request_string)
+    request_string_split = request_string.split("\n").drop(1)
+    parse_headers(request_string_split)
+    parse_params(request_string_split)
+
+    puts "Method: #{@method}", "Resource: #{@resource}", "Version: #{@version}", "Headers: #{@headers}",
+         "Params: #{@params}"
+  end
+  
   attr_reader :method, :resource, :version, :headers, :params
 
   def map_params(params)
@@ -43,18 +53,5 @@ class Request
     end
   end
 
-  private :map_params, :parse_headers, :parse_params
-
-  def initialize(request_string)
-    parse_request_lines(request_string)
-    request_string_split = request_string.split("\n").drop(1)
-    parse_headers(request_string_split)
-    parse_params(request_string_split)
-
-    puts "Method: #{@method}", "Resource: #{@resource}", "Version: #{@version}", "Headers: #{@headers}",
-         "Params: #{@params}"
-  end
+  private :map_params, :parse_headers, :parse_params, :parse_request_lines
 end
-
-request_string = File.read('../test/example_requests/get-fruits-with-filter.request.txt')
-Request.new(request_string)
