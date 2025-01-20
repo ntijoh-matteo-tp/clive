@@ -8,8 +8,8 @@ class Request
     parse_headers(request_string_split)
     parse_params(request_string_split)
 
-    puts "Method: #{@method}", "Resource: #{@resource}", "Version: #{@version}", "Headers: #{@headers}",
-         "Params: #{@params}"
+    #puts "Method: #{@method}", "Resource: #{@resource}", "Version: #{@version}", "Headers: #{@headers}",
+    #     "Params: #{@params}"
   end
   
   attr_reader :method, :resource, :version, :headers, :params
