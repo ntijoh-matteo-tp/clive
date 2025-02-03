@@ -1,0 +1,134 @@
+#wrapper{
+    display: grid;
+    height: 200vh;
+    grid-template-columns: 30% 1fr;
+    grid-template-rows: 15% 50% 20% 15%;
+    grid-template-areas:
+        'imgHd h1Hd'
+        'imgAs mn'
+        'pAs sec'
+        'ftImg nav'
+    ;
+}
+
+.imageHeader{
+    grid-area:imgHd;
+    border-style:ridge;
+    border-color: orangered;
+    border-width: 1.02rem;
+    background-color:orange
+}
+
+.titleHeader{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    grid-area:h1Hd;
+    background-color:black;
+    background-image: url(../img/lights.png);
+    background-size:cover;
+    box-shadow: 5px 5px 10px 10px orangered inset;
+}
+
+main {
+    grid-area: mn;
+    border-style:ridge;
+    border-width: 0.5rem;
+    border-color: white;
+    background-color:black
+}
+
+section {
+    grid-area: sec;
+    background-color:blue
+}
+
+
+.footerNav {
+    grid-area: nav;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color:darkorchid;
+    border-style: ridge;
+    border-width: 1rem;
+    box-shadow: 2px 5px 50px 10px orange inset;
+}
+
+.freddyMaskPNG:hover{
+    object-fit: scale-down;
+}
+
+.footerImg{
+    grid-area: ftImg;
+    background-color: black;
+    border-style: ridge;
+    border-width: 1rem;
+    border-color: white;
+}
+
+.imageAside{
+    grid-area:imgAs;
+    background-color:black;
+    border-style:ridge;
+    border-width: 1rem;
+    border-color: orangered;
+    box-shadow: 2px 5px 50px 10px orange inset;
+}
+
+.paragraphAside{
+    grid-area:pAs;
+    background-color:black;
+    border-style:ridge;
+    border-width: 1rem;
+}
+
+img {
+    object-fit: fill;
+    height: 100%;
+    width: 100%;
+    filter:saturate(80);
+}
+
+h2 {
+    font-style: italic;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    color:white;
+    text-align: center;
+}
+
+.pLight{
+    color:white
+}
+
+.pDark{
+    text-align: justify;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color:black
+}
+
+.rainbowText {
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    font-size: 4rem;
+    letter-spacing: .2rem;
+    background: linear-gradient(to right, #ef5350, #f48fb1, #7e57c2, #2196f3, #26c6da, #43a047, #eeff41, #f9a825, #ff5722);
+    /* -webkit-background-clip: text; */
+    -webkit-text-fill-color: transparent;
+}
+
+.rainbowTextSmall {
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    font-size: 1.5rem;
+    letter-spacing: .2rem;
+    background: linear-gradient(to right, #ef5350, #f48fb1, #7e57c2, #2196f3, #26c6da, #43a047, #eeff41, #f9a825, #ff5722);
+    /* -webkit-background-clip: text; */
+    -webkit-text-fill-color: transparent;
+}
+
+a{
+    color:aqua;
+}
+
+a:hover{
+    color:#2196f3
+}

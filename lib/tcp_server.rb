@@ -1,5 +1,7 @@
 require 'socket'
 require_relative 'request'
+require_relative 'router'
+require_relative 'response'
 
 class HTTPServer
 
@@ -12,16 +14,25 @@ class HTTPServer
         puts "Listening on #{@port}"
         router = Router.new
 
-        router.add_route(:get, "/banan")
-        router.add_route(:get, "/senap")
-        router.add_route(:get, "/examples")
+        router.add_route(:get, "/") do
+            File.read("../test/example_requests/index.html")
+        end
+        router.add_route(:get, "/banan") do
+            "<h1> banan </h1>"
+        end
+        router.add_route(:get, "/senap") do
+            "<h1> senap </h1>"
+        end
+        router.add_route(:get, "/examples") do
+            "<h1> examples </h1>"
+        end
 
 
         #get("/banan") do
         #end
 
         while session = server.accept
-            data = File.read("../test/example_requests/get-examples.request.txt")
+            data = ""
             while line = session.gets and line !~ /^\s*$/
                 data += line
             end
@@ -34,7 +45,8 @@ class HTTPServer
             route = router.match_route(request)
             if route
                 status = 200
-                html = "<h1>WOOT</h1>"
+                p route
+                html = route[:block].call
             else
                 status = 404
                 html = "failerald ✂✂✂"
@@ -43,35 +55,11 @@ class HTTPServer
             
             #Sen kolla om resursen (filen finns)
 
-
             # Nedanstående bör göras i er Response-klass
 
-            session.print "HTTP/1.1 #{status}\r\n"
-            session.print "Content-Type: text/html\r\n"
-            session.print "\r\n"
-            session.print html
-            session.close
+            response = Response.new(status, html, session)
+            response.send
         end
-    end
-end
-
-class Router
-    def initialize()
-        @routes = []
-    end
-
-    def add_route(method, resource)
-        @routes.append({:method => method, :resource => resource})
-    end
-    
-    def match_route(request)
-        @routes.map do |route|
-            if route[:method].to_s.upcase == request.method && route[:resource] == request.resource
-                return true
-            end
-        end
-
-        return false
     end
 end
 

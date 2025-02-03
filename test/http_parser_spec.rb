@@ -5,7 +5,7 @@ describe 'Request' do
 
     describe 'Get' do
         before do
-            @request = Request.new(File.read('./test/example_requests/get-index.request.txt'))
+            @request = Request.new(File.read('../test/example_requests/get-index.request.txt'))
         end
 
         it 'parses the http method' do
@@ -13,15 +13,20 @@ describe 'Request' do
         end 
 
         it 'parses the resource' do
-            request_string = File.read('./test/example_requests/get-index.request.txt')
-            request = Request.new(request_string)
-            _(request.resource).must_equal "/"
+            _(@request.resource).must_equal "/"
         end
 
         it 'version' do
-            assert_equal :get, @request.method
+            _(@request.version).must_equal "HTTP/1.1"
         end
 
+        #it 'headers' do
+        #    _(@request.headers).must_equal ""
+        #end
+
+        #it 'params' do
+        #    _(@request.params).must_equal "HTTP/1.1"
+        #end
     end
 
     # describe 'Simple get-request' do
