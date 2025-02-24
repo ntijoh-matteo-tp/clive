@@ -7,6 +7,18 @@ class HTTPServer
 
     def initialize(port)
         @port = port
+        @mime_types = {
+            "html" => "text/html",
+            "css" => "text/css",
+            "js" => "application/javascript",
+            "png" => "image/png",
+            "jpg" => "image/jpeg",
+            "jpeg" => "image/jpeg",
+            "gif" => "image/gif",
+            "svg" => "image/svg+xml",
+            "json" => "application/json",
+            "txt" => "text/plain"
+        }
     end
 
     def start
@@ -15,7 +27,7 @@ class HTTPServer
         router = Router.new
 
         router.add_route(:get, "/") do
-            File.read("../test/example_requests/index.html")
+            File.read("../public/index.html")
         end
         router.add_route(:get, "/banan") do
             "<h1> banan </h1>"
@@ -36,6 +48,7 @@ class HTTPServer
             while line = session.gets and line !~ /^\s*$/
                 data += line
             end
+
             puts "RECEIVED REQUEST"
             puts "-" * 40
             puts data
@@ -43,13 +56,18 @@ class HTTPServer
 
             request = Request.new(data)
             route = router.match_route(request)
+
             if route
+                body = route[:block].call
                 status = 200
-                p route
-                html = route[:block].call
+                content_type = "text/html"
+            elsif File.exist?("../public#{request.resource}")
+                body = File.binread("../public#{request.resource}")
+                p body
             else
+                body = "<h1>epic fail</h1>"
                 status = 404
-                html = "failerald ✂✂✂"
+                content_type = "text/html"
             end
             
             
@@ -57,7 +75,7 @@ class HTTPServer
 
             # Nedanstående bör göras i er Response-klass
 
-            response = Response.new(status, html, session)
+            response = Response.new(status, body, session)
             response.send
         end
     end
