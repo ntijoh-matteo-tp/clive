@@ -27,7 +27,7 @@ class HTTPServer
         router = Router.new
 
         router.add_route(:get, "/") do
-            File.read("../public/index.html")
+            File.read("./public/index.html")
         end
         router.add_route(:get, "/banan") do
             "<h1> banan </h1>"
@@ -38,10 +38,6 @@ class HTTPServer
         router.add_route(:get, "/examples") do
             "<h1> examples </h1>"
         end
-
-
-        #get("/banan") do
-        #end
 
         while session = server.accept
             data = ""
@@ -61,8 +57,8 @@ class HTTPServer
                 body = route[:block].call
                 status = 200
                 content_type = "text/html"
-            elsif File.exist?("../public#{request.resource}")
-                body = File.binread("../public#{request.resource}")
+            elsif File.exist?("./public#{request.resource}")
+                body = File.binread("./public#{request.resource}")
                 p body
             else
                 body = "<h1>epic fail</h1>"
