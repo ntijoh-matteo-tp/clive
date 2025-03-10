@@ -2,6 +2,7 @@ require 'socket'
 require_relative 'request'
 require_relative 'router'
 require_relative 'response'
+require_relative '../app'
 
 class HTTPServer
 
@@ -26,19 +27,6 @@ class HTTPServer
         puts "Listening on #{@port}"
         router = Router.new
 
-        router.add_route(:get, "/") do
-            File.read("./public/index.html")
-        end
-        router.add_route(:get, "/banan") do
-            "<h1> banan </h1>"
-        end
-        router.add_route(:get, "/senap") do
-            "<h1> senap </h1>"
-        end
-        router.add_route(:get, "/examples") do
-            "<h1> examples </h1>"
-        end
-
         while session = server.accept
             data = ""
             while line = session.gets and line !~ /^\s*$/
@@ -58,6 +46,7 @@ class HTTPServer
                 status = 200
                 content_type = "text/html"
             elsif File.exist?("./public#{request.resource}")
+                puts "Resource: #{request.resource}"
                 body = File.binread("./public#{request.resource}")
                 p body
             else

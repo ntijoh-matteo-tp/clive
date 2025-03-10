@@ -1,5 +1,7 @@
-require_relative 'tcp_server'
+require_relative 'clive'
 
-get('/') do
+router = Router.new
 
+router.add_route(:get, '/banananana') do
+  File.read("public/index.html")
 end

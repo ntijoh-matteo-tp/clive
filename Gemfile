@@ -7,6 +7,8 @@ gem "minitest", "~> 5.25"
 
 gem "minitest-reporters", "~> 1.7"
 
+gem 'mime-types', '~> 3.1'
+
 gem 'rubocop', require: false
 
 gem "rubycritic", require: false
