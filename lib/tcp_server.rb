@@ -2,12 +2,12 @@ require 'socket'
 require_relative 'request'
 require_relative 'router'
 require_relative 'response'
-require_relative '../app'
 
 class HTTPServer
 
-    def initialize(port)
+    def initialize(port,router)
         @port = port
+        @router = router
         @mime_types = {
             "html" => "text/html",
             "css" => "text/css",
@@ -25,7 +25,6 @@ class HTTPServer
     def start
         server = TCPServer.new(@port)
         puts "Listening on #{@port}"
-        #router = Router.new
 
         
         #router.add_route(:get, '/') do
@@ -48,7 +47,7 @@ class HTTPServer
             puts "-" * 40
 
             request = Request.new(data)
-            route = router.match_route(request)
+            route = @router.match_route(request)
 
             puts "Resource: #{request.resource}"
             #request.resource != "" && request.resource != "/" && 
@@ -66,11 +65,6 @@ class HTTPServer
                 status = 404
                 content_type = "text/html"
             end
-            
-            
-            #Sen kolla om resursen (filen finns)
-
-            # Nedanstående bör göras i er Response-klass
 
             response = Response.new(status, content_type, body, session)
             response.send
@@ -78,5 +72,3 @@ class HTTPServer
     end
 end
 
-server = HTTPServer.new(4567)
-server.start
