@@ -6,7 +6,7 @@ r.get('/') do
   File.read("public/index.html")
 end
 r.get('/add/:num1/:num2') do |params|
-  File.read("public/index.html")
+  puts "hello"
 end
 
 #/user/5/posts/3

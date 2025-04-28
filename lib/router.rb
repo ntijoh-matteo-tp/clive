@@ -3,36 +3,66 @@ class Router
         @routes = []
     end
 
-  #def add_route(method, resource, &block)
-  #    @routes.append({:method => method, :resource => resource, :block => block})
-  #end
+    #def add_route(method, resource, &block)
+    #    @routes.append({:method => method, :resource => resource, :block => block})
+    #end
   
     def match_route(request)
+        puts "Putsing routes"
+        p @routes
+        p @routes
+        p @routes
         @routes.map do |route|
-            splitResource = request.resource.split("/").delete_at(0)
+            puts "BEFORE splitting"
+            p route[:resource]
+            splitRouteResource = route[:resource].split("/")
+            routeParamIndexes = []
+            puts "AFTER spitting"
+
+            p splitRouteResource
             i = 0
-            while i < splitResource.length
-                if splitResource[i].contains?(":")
-
-            if request.resource == "/add/1/2" && route[:resource] == "/add/:num1/:num2"
-                require 'debug'
-                binding.break
+            while i < splitRouteResource.length
+                if splitRouteResource[i][0] == ":"
+                    routeParamIndexes.append(i)
+                end
+                i += 1
             end
-            if [route[:method].to_s.upcase, route[:resource]] == [request.method, request.resource]
-                j = request.resource.count(":")
-                if j > 0
-                    i = 0
-                    while i < j
-                        i += 1
-                    end
-                return route
-             end
-        end
 
-      return false
+            splitRequestResource = request.resource.split("/")
+
+            puts "comparing:"
+            p splitRouteResource
+            puts "to"
+            p splitRequestResource
+
+
+            i = 0
+            while i < splitRequestResource.length
+                if routeParamIndexes.include?(i)
+                    i += 1
+                else
+                    if splitRequestResource[i] == splitRouteResource[i]
+                        i += 1
+                    else
+                        break
+                    end
+                end
+
+                return route
+            end
+
+        end
     end
 
     def get(resource, &block)
-        @routes.append({:method => :get, :resource => resource, :block => block})
+        puts "getting"
+        puts resource
+        puts resource
+        puts resource
+        puts resource
+        puts resource
+        puts resource
+        puts resource
+        @routes.append({:method => "get", :resource => resource, :block => block})
     end
 end
