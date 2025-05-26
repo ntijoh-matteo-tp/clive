@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+# Handles an incoming HTTP request by parsing it as a string
+#
 # @author Matteo Torquato Perillo
 class Request
 
-  # Initializes a Request object by parsing a HTTP request string and assigning each part to its respective attribute of the object.
+  # Initializes a Request by parsing a HTTP request string and assigning each part to its respective attribute of the Request object.
   #
-  # @param request_string [String] the string with the html request.
+  # @param request_string [String] the string with the HTTP request.
   # @return [Request] an instance of the object, a Request. 
   def initialize(request_string)
     parse_request_lines(request_string)
@@ -39,14 +41,12 @@ class Request
   def parse_params(request_string_split)
     @params = {}
 
-    # Params in resource
     if @resource.include?('?')
       params = @resource.split('?').drop(1)
-      params = params[0].split('&')
+      params = params[0].split('&')         
       map_params(params)
     end
 
-    # Params at bottom
     if request_string_split.include?('')
       params = request_string_split[-1].split('&')
       map_params(params)
@@ -54,7 +54,7 @@ class Request
   end
 
   # (see #parse_params)
-  # @note Maps the params array parsed from the request string.
+  # @note Parses the params in case they are located at the end of the request
   def map_params(params)
     params.map do |item|
       item = item.split('=')
